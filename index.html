@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2013-2024 외국인 관광객 유입 패턴 분석</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif; }
+        body { background-color: #f1f5f9; color: var(--dark); line-height: 1.6; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); overflow: hidden; }
+
+        /* Header */
+        header { background: linear-gradient(135deg, var(--dark), var(--primary)); color: white; padding: 60px 40px; text-align: center; }
+        header h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 15px; letter-spacing: -1px; }
+        header p { font-size: 1.1rem; opacity: 0.9; font-weight: 300; }
+
+        /* Section Styling */
+        section { padding: 50px 40px; border-bottom: 1px solid #eee; }
+        .section-title { font-size: 1.8rem; font-weight: 700; margin-bottom: 40px; display: flex; align-items: center; gap: 10px; }
+        .section-title::before { content: ''; display: inline-block; width: 6px; height: 30px; background: var(--primary); border-radius: 3px; }
+
+        /* 3 Stages Flow */
+        .flow-container { display: flex; justify-content: space-between; gap: 20px; margin-bottom: 30px; }
+        .flow-item { flex: 1; background: var(--light); padding: 25px; border-radius: 15px; text-align: center; position: relative; }
+        .flow-item .step { font-weight: 800; color: var(--primary); font-size: 1.2rem; margin-bottom: 10px; display: block; }
+        .flow-item h3 { font-size: 1.1rem; margin-bottom: 10px; }
+        .flow-item p { font-size: 0.9rem; color: var(--gray); }
+
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        .stat-card { background: white; border: 1px solid #e2e8f0; padding: 25px; border-radius: 20px; transition: transform 0.3s; }
+        .stat-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .stat-card .country { font-size: 1rem; color: var(--gray); display: flex; align-items: center; gap: 8px; }
+        .stat-card .value { font-size: 2rem; font-weight: 800; margin: 10px 0; color: var(--dark); }
+        .stat-card .trend { font-size: 0.9rem; font-weight: 600; padding: 4px 10px; border-radius: 20px; display: inline-block; }
+        .trend.up { background: #dcfce7; color: var(--secondary); }
+        .trend.down { background: #fee2e2; color: var(--danger); }
+        .trend.recovery { background: #dbeafe; color: var(--primary); }
+
+        /* COVID Impact */
+        .impact-box { background: #fff1f2; border-radius: 20px; padding: 40px; text-align: center; border: 2px dashed var(--danger); }
+        .impact-value { font-size: 4rem; font-weight: 900; color: var(--danger); line-height: 1; }
+        .impact-label { font-size: 1.2rem; font-weight: 700; color: var(--danger); margin-bottom: 15px; }
+
+        /* Market Analysis */
+        .market-analysis { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+        .market-card { padding: 25px; border-radius: 20px; color: white; }
+        .market-card.china { background: linear-gradient(135deg, #f43f5e, #be123c); }
+        .market-card.japan { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .market-card.west { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+        .market-card h3 { font-size: 1.4rem; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .market-card ul { list-style: none; font-size: 0.9rem; opacity: 0.9; }
+        .market-card li { margin-bottom: 8px; }
+
+        /* Strategy */
+        .strategy-container { display: flex; flex-direction: column; gap: 15px; }
+        .strategy-item { display: flex; align-items: flex-start; gap: 20px; background: var(--light); padding: 25px; border-radius: 15px; }
+        .strategy-icon { font-size: 2rem; background: white; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.05); flex-shrink: 0; }
+        .strategy-content h4 { font-size: 1.2rem; margin-bottom: 5px; color: var(--primary); }
+        .strategy-content p { font-size: 0.95rem; color: var(--gray); }
+
+        /* Footer */
+        footer { background: var(--light); padding: 40px; text-align: center; }
+        .quote { font-size: 1.2rem; font-weight: 600; font-style: italic; color: var(--dark); margin-bottom: 20px; }
+        .action-items { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .badge { background: var(--dark); color: white; padding: 8px 16px; border-radius: 30px; font-size: 0.85rem; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .flow-container, .market-analysis { grid-template-columns: 1fr; flex-direction: column; }
+            header h1 { font-size: 1.8rem; }
+            section { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <p>2013-2024 DATA INSIGHT REPORT</p>
+        <h1>대한민국 외국인 관광객 유입 분석</h1>
+        <p>폭발적 성장부터 팬데믹의 충격, 그리고 새로운 도약까지</p>
+    </header>
+
+    <!-- 1. 흐름 분석 -->
+    <section>
+        <h2 class="section-title">관광 산업 3단계 변곡점</h2>
+        <div class="flow-container">
+            <div class="flow-item">
+                <span class="step">STEP 01</span>
+                <h3>폭발적 성장기</h3>
+                <p>중국 중심의 양적 팽창<br>(~2016년)</p>
+            </div>
+            <div class="flow-item" style="border: 2px solid var(--danger);">
+                <span class="step" style="color: var(--danger);">STEP 02</span>
+                <h3>유례없는 침체기</h3>
+                <p>팬데믹 충격 및 셧다운<br>(2020~2022년)</p>
+            </div>
+            <div class="flow-item" style="background: #ecfdf5; border: 1px solid var(--secondary);">
+                <span class="step" style="color: var(--secondary);">STEP 03</span>
+                <h3>회복 및 체질 개선</h3>
+                <p>시장 다변화 및 질적 성장<br>(2023년~현재)</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. 주요 지표 -->
+    <section>
+        <h2 class="section-title">국가별 유입량 및 회복률 (2024년 8월 기준)</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="country">🇨🇳 중국</div>
+                <div class="value">152,099명</div>
+                <div class="trend recovery">과거 대비 33% 회복</div>
+            </div>
+            <div class="stat-card">
+                <div class="country">🇯🇵 일본</div>
+                <div class="value">23,006명</div>
+                <div class="trend up">팬데믹 이전 상회</div>
+            </div>
+            <div class="stat-card">
+                <div class="country">🇹🇼 대만</div>
+                <div class="value">22,917명</div>
+                <div class="trend up">595% 폭발적 성장</div>
+            </div>
+            <div class="stat-card">
+                <div class="country">🇺🇸 미국</div>
+                <div class="value">5,231명</div>
+                <div class="trend up">안정적 우상향</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. 팬데믹 충격 -->
+    <section>
+        <div class="impact-box">
+            <div class="impact-label">COVID-19 IMPACT INDEX</div>
+            <div class="impact-value">99.4% ↓</div>
+            <p style="margin-top: 15px; color: var(--gray);">2019년 8월 대비 2020년 8월 중국 관광객 감소폭</p>
+        </div>
+    </section>
+
+    <!-- 4. 시장별 특징 -->
+    <section>
+        <h2 class="section-title">3대 핵심 시장 분석</h2>
+        <div class="market-analysis">
+            <div class="market-card china">
+                <h3>🐋 중국</h3>
+                <ul>
+                    <li>• 거대 고래의 귀환</li>
+                    <li>• 단체관광 → 개별관광(FIT)</li>
+                    <li>• 7~8월 여름 집중도 높음</li>
+                    <li><strong>→ 고부가가치 상품 필요</strong></li>
+                </ul>
+            </div>
+            <div class="market-card japan">
+                <h3>🚀 대만 & 일본</h3>
+                <ul>
+                    <li>• 안정적 성장의 견인차</li>
+                    <li>• K-컬처(음식, 드라마) 민감</li>
+                    <li>• 역대 최고 활력 기록 중</li>
+                    <li><strong>→ 로컬 관광 거점 연계</strong></li>
+                </ul>
+            </div>
+            <div class="market-card west">
+                <h3>🌍 서구권</h3>
+                <ul>
+                    <li>• 리스크 분산의 핵심</li>
+                    <li>• 장기 체류 및 높은 소비</li>
+                    <li>• 계절적 변동폭 적음</li>
+                    <li><strong>→ 워케이션/의료 관광</strong></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. 전략 제언 -->
+    <section>
+        <h2 class="section-title">미래 성장을 위한 3대 전략</h2>
+        <div class="strategy-container">
+            <div class="strategy-item">
+                <div class="strategy-icon">📊</div>
+                <div class="strategy-content">
+                    <h4>시장 다변화 (Diversification)</h4>
+                    <p>중국 의존도를 낮추고 대만, 미국, 동남아시아 마케팅 예산 30% 증액</p>
+                </div>
+            </div>
+            <div class="strategy-item">
+                <div class="strategy-icon">❄️</div>
+                <div class="strategy-content">
+                    <h4>비수기 테마 개발 (Seasonality)</h4>
+                    <p>겨울(K-윈터), 봄/가을 축제 등 계절별 특화 상품으로 유입 분산</p>
+                </div>
+            </div>
+            <div class="strategy-item">
+                <div class="strategy-icon">📱</div>
+                <div class="strategy-content">
+                    <h4>개인화 여정 설계 (Hyper-Personalization)</h4>
+                    <p>데이터 기반 국가별 맞춤 콘텐츠 및 디지털 결제/이동 인프라 고도화</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p class="quote">"데이터는 과거를 말하지만, 전략은 미래를 결정한다."</p>
+        <div class="action-items">
+            <span class="badge">#분기별_모니터링</span>
+            <span class="badge">#로컬_콘텐츠_강화</span>
+            <span class="badge">#디지털_수용태세_정비</span>
+        </div>
+        <p style="margin-top: 30px; font-size: 0.8rem; color: var(--gray);">© 2024 Tourism Data Insight Report. All rights reserved.</p>
+    </footer>
+</div>
+
+</body>
+</html>
